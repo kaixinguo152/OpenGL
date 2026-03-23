@@ -25,93 +25,66 @@ Geometry* Geometry::createBox(float size) {
 	float halfSize = size / 2.0f;
 
 	float positions[] = {
-		-halfSize, -halfSize,  halfSize,  // v0
-		 halfSize, -halfSize,  halfSize,  // v1
-		 halfSize,  halfSize,  halfSize,  // v2
-		-halfSize,  halfSize,  halfSize,  // v3
+		// front (z = +half)  BL, BR, TR, TL
+		-halfSize, -halfSize,  halfSize,
+		 halfSize, -halfSize,  halfSize,
+		 halfSize,  halfSize,  halfSize,
+		-halfSize,  halfSize,  halfSize,
 
-		// 背面 (z = -halfSize) - 4个顶点
-		 halfSize, -halfSize, -halfSize,  // v4
-		-halfSize, -halfSize, -halfSize,  // v5
-		-halfSize,  halfSize, -halfSize,  // v6
-		 halfSize,  halfSize, -halfSize,  // v7
+		// back (z = -half)   BL, BR, TR, TL  (viewed from outside back)
+		 halfSize, -halfSize, -halfSize,
+		-halfSize, -halfSize, -halfSize,
+		-halfSize,  halfSize, -halfSize,
+		 halfSize,  halfSize, -halfSize,
 
-		 // 左面 (x = -halfSize) - 4个顶点
-		 -halfSize, -halfSize, -halfSize,  // v8 (重复v5)
-		 -halfSize, -halfSize,  halfSize,  // v9 (重复v0)
-		 -halfSize,  halfSize,  halfSize,  // v10 (重复v3)
-		 -halfSize,  halfSize, -halfSize,  // v11 (重复v6)
+		 // left (x = -half)
+		 -halfSize, -halfSize, -halfSize,
+		 -halfSize, -halfSize,  halfSize,
+		 -halfSize,  halfSize,  halfSize,
+		 -halfSize,  halfSize, -halfSize,
 
-		 // 右面 (x = halfSize) - 4个顶点
-		  halfSize, -halfSize,  halfSize,  // v12 (重复v1)
-		  halfSize, -halfSize, -halfSize,  // v13 (重复v4)
-		  halfSize,  halfSize, -halfSize,  // v14 (重复v7)
-		  halfSize,  halfSize,  halfSize,  // v15 (重复v2)
+		 // right (x = +half)
+		  halfSize, -halfSize,  halfSize,
+		  halfSize, -halfSize, -halfSize,
+		  halfSize,  halfSize, -halfSize,
+		  halfSize,  halfSize,  halfSize,
 
-		  // 上面 (y = halfSize) - 4个顶点
-		  -halfSize,  halfSize,  halfSize,  // v16 (重复v3)
-		   halfSize,  halfSize,  halfSize,  // v17 (重复v2)
-		   halfSize,  halfSize, -halfSize,  // v18 (重复v7)
-		  -halfSize,  halfSize, -halfSize,  // v19 (重复v6)
+		  // top (y = +half)
+		  -halfSize,  halfSize,  halfSize,
+		   halfSize,  halfSize,  halfSize,
+		   halfSize,  halfSize, -halfSize,
+		  -halfSize,  halfSize, -halfSize,
 
-		  // 下面 (y = -halfSize) - 4个顶点
-		  -halfSize, -halfSize, -halfSize,  // v20 (重复v5)
-		   halfSize, -halfSize, -halfSize,  // v21 (重复v4)
-		   halfSize, -halfSize,  halfSize,  // v22 (重复v1)
-		  -halfSize, -halfSize,  halfSize   // v23 (重复v0)
+		  // bottom (y = -half)
+		  -halfSize, -halfSize, -halfSize,
+		   halfSize, -halfSize, -halfSize,
+		   halfSize, -halfSize,  halfSize,
+		  -halfSize, -halfSize,  halfSize
 	};
 
 	float uvs[] = {
-		// 正面
-		0, 0,  // v0
-		1, 0,  // v1
-		1, 1,  // v2
-		0, 1,  // v3
-
-		// 背面 (注意方向保持一致，使纹理可见)
-		1, 0,  // v4
-		0, 0,  // v5
-		0, 1,  // v6
-		1, 1,  // v7
-
-		// 左面
-		0, 0,  // v8
-		1, 0,  // v9
-		1, 1,  // v10
-		0, 1,  // v11
-
-		// 右面
-		1, 0,  // v12
-		0, 0,  // v13
-		0, 1,  // v14
-		1, 1,  // v15
-
-		// 上面
-		0, 1,  // v16 (注意上面从y轴俯视，u对应x，v对应z，方向调整使纹理正)
-		1, 1,  // v17
-		1, 0,  // v18
-		0, 0,  // v19
-
-		// 下面
-		0, 0,  // v20
-		1, 0,  // v21
-		1, 1,  // v22
-		0, 1   // v23
+		// each face: BL, BR, TR, TL
+		0.0f, 0.0f,  1.0f, 0.0f,  1.0f, 1.0f,  0.0f, 1.0f, // front
+		0.0f, 0.0f,  1.0f, 0.0f,  1.0f, 1.0f,  0.0f, 1.0f, // back
+		0.0f, 0.0f,  1.0f, 0.0f,  1.0f, 1.0f,  0.0f, 1.0f, // left
+		0.0f, 0.0f,  1.0f, 0.0f,  1.0f, 1.0f,  0.0f, 1.0f, // right
+		0.0f, 0.0f,  1.0f, 0.0f,  1.0f, 1.0f,  0.0f, 1.0f, // top
+		0.0f, 0.0f,  1.0f, 0.0f,  1.0f, 1.0f,  0.0f, 1.0f  // bottom
 	};
 
 	unsigned int indices[] = {
-		// 正面
-	   0, 1, 2,  0, 2, 3,
-	   // 背面
-	   4, 5, 6,  4, 6, 7,
-	   // 左面
-	   8, 9, 10,  8, 10, 11,
-	   // 右面
-	   12, 13, 14,  12, 14, 15,
-	   // 上面
-	   16, 17, 18,  16, 18, 19,
-	   // 下面
-	   20, 21, 22,  20, 22, 23
+		// front
+		0, 1, 2,  0, 2, 3,
+		// back
+		4, 5, 6,  4, 6, 7,
+		// left
+		8, 9,10,  8,10,11,
+		// right
+		12,13,14, 12,14,15,
+		// top
+		16,17,18, 16,18,19,
+		// bottom
+		20,21,22, 20,22,23
 	};
 	//geometry->mIndicesCount = sizeof(indices)/sizeof(indices[0]);
 

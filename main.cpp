@@ -21,6 +21,7 @@ glm::mat4 transformLand(1.0f);
 
 Texture* textureGrass = nullptr;
 Texture* textureLand = nullptr;
+Texture* textureEarth = nullptr;
 
 Texture* texture = nullptr;
 glm::mat4 transform(1.0);
@@ -85,6 +86,7 @@ void prepareTexture() {
 	//texture = new Texture("./assets/textures/texture.jpeg", 0);
 	textureGrass = new Texture("./assets/textures/grass.jpeg", 0);
 	textureLand = new Texture("./assets/textures/land.jpeg", 0);
+	textureEarth = new Texture("./assets/textures/earth.jpg",0);
 }
 
 void prepareCamera() {
@@ -98,7 +100,7 @@ void prepareCamera() {
 	cameraControl = new CameraControl();
 	cameraControl->setCamera(camera);
 
-	//viewMatrix = glm::lookAt(glm::vec3(0.5f, 0.5f, 1.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+	viewMatrix = glm::lookAt(glm::vec3(0.5f, 0.5f, 1.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 }
 
 void preparePerspective() {
@@ -121,7 +123,8 @@ void render() {
 	shader->begin();
 	shader->setInt("sampler", 0);
 	shader->setMatrix4x4("transform", transform);
-	shader->setMatrix4x4("viewMatrix", camera->getViewMatrix());//设置相机矩阵
+	//shader->setMatrix4x4("viewMatrix", camera->getViewMatrix());//设置相机矩阵
+	shader->setMatrix4x4("viewMatrix", viewMatrix);
 	shader->setMatrix4x4("projectionMatrix", perspectiveMatrix);//设置投影矩阵
 
 	//shader->setFloat("time", glfwGetTime());
@@ -131,7 +134,7 @@ void render() {
 	//shader->setFloat("width", texture->getWidth());
 	//shader->setFloat("height", texture->getHeight());
 	//shader->setMatrix4x4("transform", transform);
-	textureLand->bind();
+	textureEarth->bind();
 	glBindVertexArray(geometry->getVao());
 	glDrawElements(GL_TRIANGLES, geometry->getIndicesCount(), GL_UNSIGNED_INT, 0);
 
