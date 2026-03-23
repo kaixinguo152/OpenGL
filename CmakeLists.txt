@@ -1,0 +1,28 @@
+cmake_minimum_required(VERSION 3.10)
+
+project(OpenGL)
+
+set(CMAKE_CXX_STANDARD 17)
+
+file(GLOB ASSETS "./assets")
+file(COPY ${ASSETS} DESTINATION ${CMAKE_BINARY_DIR})
+
+add_definitions(-DDEBUG)
+
+include_directories(
+	SYSTEM ${CMAKE_CURRENT_SOURCE_DIR}/thirdParty/include
+)
+
+link_directories(
+	SYSTEM ${CMAKE_CURRENT_SOURCE_DIR}/thirdParty/lib
+)
+
+add_subdirectory(wrapper) 
+add_subdirectory(application)
+add_subdirectory(glframework)
+
+#aux_source_directory(. SRCS)
+
+add_executable(glStudy "main.cpp" "glad.c")
+
+target_link_libraries(glStudy glfw3.lib wrapper application fw)

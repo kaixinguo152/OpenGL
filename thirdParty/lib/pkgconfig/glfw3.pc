@@ -1,0 +1,13 @@
+prefix=F:/Codes/计算机图形学OpenGL/glfw-3.4/glfw-3.4/Build/Install
+exec_prefix=${prefix}
+includedir=F:/Codes/计算机图形学OpenGL/glfw-3.4/glfw-3.4/Build/Install/include
+libdir=F:/Codes/计算机图形学OpenGL/glfw-3.4/glfw-3.4/Build/Install/lib
+
+Name: GLFW
+Description: A multi-platform library for OpenGL, window and input
+Version: 3.4.0
+URL: https://www.glfw.org/
+Requires.private: 
+Libs: -L${libdir} -lglfw3
+Libs.private:  -lgdi32
+Cflags: -I${includedir}
