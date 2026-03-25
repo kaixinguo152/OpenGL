@@ -12,6 +12,9 @@ Geometry::~Geometry() {
 	if (0 != mUvVbo) {
 		glDeleteBuffers(1, &mUvVbo);
 	}
+	if (0 != mNormalVbo) {
+		glDeleteBuffers(1, &mNormalVbo);
+	}
 	if (0 != mEbo) {
 		glDeleteBuffers(1, &mEbo);
 	}
@@ -62,6 +65,41 @@ Geometry* Geometry::createBox(float size) {
 		  -halfSize, -halfSize,  halfSize
 	};
 
+	float normals[] = {
+		//前面
+		0.0f,0.0f,1.0f,
+		0.0f,0.0f,1.0f,
+		0.0f,0.0f,1.0f,
+		0.0f,0.0f,1.0f,
+		//后面
+		0.0f,0.0f,-1.0f,
+		0.0f,0.0f,-1.0f,
+		0.0f,0.0f,-1.0f,
+		0.0f,0.0f,-1.0f,
+
+		//上面
+		0.0f,1.0f,0.0f,
+		0.0f,1.0f,0.0f,
+		0.0f,1.0f,0.0f,
+		0.0f,1.0f,0.0f,
+		//下面
+		0.0f,-1.0f,0.0f,
+		0.0f,-1.0f,0.0f,
+		0.0f,-1.0f,0.0f,
+		0.0f,-1.0f,0.0f,
+
+		//右面
+		1.0f,0.0f,0.0f,
+		1.0f,0.0f,0.0f,
+		1.0f,0.0f,0.0f,
+		1.0f,0.0f,0.0f,
+		//左面
+		-1.0f,0.0f,0.0f,
+		-1.0f,0.0f,0.0f,
+		-1.0f,0.0f,0.0f,
+		-1.0f,0.0f,0.0f
+	};
+
 	float uvs[] = {
 		// each face: BL, BR, TR, TL
 		0.0f, 0.0f,  1.0f, 0.0f,  1.0f, 1.0f,  0.0f, 1.0f, // front
@@ -90,6 +128,7 @@ Geometry* Geometry::createBox(float size) {
 
 	GLuint& posVbo = geometry->mPosVbo;
 	GLuint& uvVbo = geometry->mUvVbo;
+	GLuint& normalVbo = geometry->mNormalVbo;
 	GLuint& ebo = geometry->mEbo;
 
 	glGenBuffers(1, &posVbo);
@@ -100,10 +139,15 @@ Geometry* Geometry::createBox(float size) {
 	glBindBuffer(GL_ARRAY_BUFFER, uvVbo);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(uvs), uvs, GL_STATIC_DRAW);
 
+	glGenBuffers(1, &normalVbo);
+	glBindBuffer(GL_ARRAY_BUFFER, normalVbo);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(normals), normals, GL_STATIC_DRAW);
+
 	glGenBuffers(1, &ebo);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
+	//generate vao
 	glGenVertexArrays(1, &geometry->mVao);
 	glBindVertexArray(geometry->mVao);
 
@@ -114,6 +158,10 @@ Geometry* Geometry::createBox(float size) {
 	glBindBuffer(GL_ARRAY_BUFFER, uvVbo);
 	glEnableVertexAttribArray(1);
 	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (void*)0);
+
+	glBindBuffer(GL_ARRAY_BUFFER, normalVbo);
+	glEnableVertexAttribArray(2);
+	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
 
 	// 绑定 EBO 到 VAO，确保 VAO 持有索引缓冲
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);

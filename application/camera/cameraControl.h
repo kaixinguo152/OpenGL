@@ -18,7 +18,7 @@ public:
 
 	void setCamera(Camera* camera) { mCamera = camera; }
 	void setSensitivity(float sensitivity) { mSensitivity = sensitivity; }
-private:
+protected:
 	bool mLeftMousePressed = false;
 	bool mRightMousePressed = false;
 	bool mMiddleMousePressed = false;

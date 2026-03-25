@@ -9,9 +9,12 @@
 
 //引入相机和控制器
 #include"application/camera/perspectiveCamera.h"
-#include"application/camera/cameraControl.h"
+#include"application/camera/gameCameraControl.h"
 
 #include"glframework/geometry.h"
+
+glm::vec3 lightDirectin = glm::vec3(-1.0f,-1.0f,-1.0f);
+glm::vec3 lightColor = glm::vec3(0.9f, 0.85f, 0.75f);
 
 Geometry* geometry = nullptr;
 Shader* shader = nullptr;
@@ -34,7 +37,7 @@ Texture* landTexture = nullptr;
 Texture* noiseTexture = nullptr;
 
 perspectiveCamera* camera = nullptr;
-CameraControl* cameraControl = nullptr;
+gameCameraControl* cameraControl = nullptr;
 
 //鼠标按下/抬起
 void OnMouse(int button, int action, int mods) {
@@ -97,7 +100,7 @@ void prepareCamera() {
 		1000.0f
 	);
 
-	cameraControl = new CameraControl();
+	cameraControl = new gameCameraControl();
 	cameraControl->setCamera(camera);
 
 	viewMatrix = glm::lookAt(glm::vec3(0.5f, 0.5f, 1.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
@@ -123,9 +126,13 @@ void render() {
 	shader->begin();
 	shader->setInt("sampler", 0);
 	shader->setMatrix4x4("transform", transform);
-	//shader->setMatrix4x4("viewMatrix", camera->getViewMatrix());//设置相机矩阵
-	shader->setMatrix4x4("viewMatrix", viewMatrix);
+	shader->setMatrix4x4("viewMatrix", camera->getViewMatrix());//设置相机矩阵
+	//shader->setMatrix4x4("viewMatrix", viewMatrix);
 	shader->setMatrix4x4("projectionMatrix", perspectiveMatrix);//设置投影矩阵
+
+	//把光照数据设置到着色器中
+	shader->setVector3("lightDirection", lightDirectin);
+	shader->setVector3("lightColor", lightColor);
 
 	//shader->setFloat("time", glfwGetTime());
 	//shader->setInt("grassSampler", 0);
