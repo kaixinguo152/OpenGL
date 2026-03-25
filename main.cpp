@@ -14,7 +14,7 @@
 #include"glframework/geometry.h"
 
 glm::vec3 lightDirectin = glm::vec3(-1.0f,-1.0f,-1.0f);
-glm::vec3 lightColor = glm::vec3(0.9f, 0.85f, 0.75f);
+glm::vec3 lightColor = glm::vec3(1.0f, 1.0f, 1.0f);
 
 Geometry* geometry = nullptr;
 Shader* shader = nullptr;
@@ -178,7 +178,9 @@ int main(void) {
 	preparePerspective();
 	prepareState();
 
+	//设置键盘响应时间
 	app->setKeyboardCallback(OnKey);
+	//设置鼠标响应时间
 	app->setCursorCallback(OnCursor);
 
 	glViewport(0, 0, app->getWindowWidth(), app->getWindowHeight());

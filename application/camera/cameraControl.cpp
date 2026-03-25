@@ -24,7 +24,8 @@ void CameraControl::onMouse(int button, int action, int mods, double xpos, doubl
 	}
 };
 void CameraControl::onCursor(double xpos, double ypos) {
-
+	mCurrentMouseX = xpos;
+	mCurrentMouseY = ypos;
 };
 void CameraControl::onKey(int key, int scancode, int action, int mods) {
 	if (action == GLFW_REPEAT) {

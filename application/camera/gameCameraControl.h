@@ -11,6 +11,9 @@ public:
 	void translateY(float delta);
 	void translateZ(float delta);
 
+	void onCursor(double xpos, double ypos) override;
+	void setViewDirection(float xpos,float ypos);
+
 private:
-	GLfloat mMoveSpeed{ 0.0001f };
+	GLfloat mMoveSpeed{ 0.005f };
 };
