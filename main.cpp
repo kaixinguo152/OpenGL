@@ -13,7 +13,7 @@
 
 #include"glframework/geometry.h"
 
-glm::vec3 lightDirectin = glm::vec3(-1.0f,-1.0f,-1.0f);
+glm::vec3 lightDirection = glm::vec3(-1.0f,-1.0f,-1.0f);
 glm::vec3 lightColor = glm::vec3(1.0f, 1.0f, 1.0f);
 
 Geometry* geometry = nullptr;
@@ -125,14 +125,16 @@ void render() {
 
 	shader->begin();
 	shader->setInt("sampler", 0);
-	shader->setMatrix4x4("transform", transform);
+	shader->setMatrix4x4("modelMatrix", transform);
 	shader->setMatrix4x4("viewMatrix", camera->getViewMatrix());//设置相机矩阵
 	//shader->setMatrix4x4("viewMatrix", viewMatrix);
 	shader->setMatrix4x4("projectionMatrix", perspectiveMatrix);//设置投影矩阵
 
 	//把光照数据设置到着色器中
-	shader->setVector3("lightDirection", lightDirectin);
+	shader->setVector3("lightDirection", lightDirection);
 	shader->setVector3("lightColor", lightColor);
+
+	shader->setVector3("cameraPosition", camera->mPosition);
 
 	//shader->setFloat("time", glfwGetTime());
 	//shader->setInt("grassSampler", 0);
@@ -191,7 +193,7 @@ int main(void) {
 	//doScaleTransform(); 
 	//preTransform();
 	while (app->update()) {
-		doTransform();
+		//doTransform();
 		cameraControl->update();
 		render();
 	}

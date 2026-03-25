@@ -8,8 +8,9 @@ layout (location = 2) in vec3 aNormal;
 
 out vec2 uv;
 out vec3 normal;
+out vec3 worldPosition;
 
-uniform mat4 transform;
+uniform mat4 modelMatrix;
 uniform mat4 viewMatrix;
 uniform mat4 projectionMatrix;
 
@@ -19,10 +20,15 @@ void main(){
 
 	//float scale = 1.0/time;
 
-	vec4 position = vec4(aPos,1.0);
-	position = projectionMatrix * viewMatrix * transform * position;
+	vec4 transformPosition = vec4(aPos, 1.0f);
+
+	//计算当前顶点的worldposition
+	transformPosition = modelMatrix * transformPosition;
+
+	worldPosition = transformPosition.xyz;
+
+	gl_Position = projectionMatrix * viewMatrix * transformPosition;
 	//gl_Position = vec4((aPos.x + offsetX)*scale,aPos.y*scale,aPos.z*scale,1.0);
-	gl_Position = vec4(position);
 	//color = aColor;
 	uv = aUv;
 	normal = aNormal;
