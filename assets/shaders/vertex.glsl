@@ -31,5 +31,5 @@ void main(){
 	//gl_Position = vec4((aPos.x + offsetX)*scale,aPos.y*scale,aPos.z*scale,1.0);
 	//color = aColor;
 	uv = aUv;
-	normal = aNormal;
+	normal = transpose(inverse(mat3(modelMatrix))) * aNormal;
 }

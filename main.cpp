@@ -13,8 +13,12 @@
 
 #include"glframework/geometry.h"
 
-glm::vec3 lightDirection = glm::vec3(-1.0f,-1.0f,-1.0f);
+glm::vec3 lightDirection = glm::vec3(-1.0f, -1.0f, -1.0f);
 glm::vec3 lightColor = glm::vec3(1.0f, 1.0f, 1.0f);
+//specular
+float specularInstensity = 0.7f;
+//ambient
+glm::vec3 ambientColor = glm::vec3(0.15f, 0.15f, 0.15f);
 
 Geometry* geometry = nullptr;
 Shader* shader = nullptr;
@@ -73,12 +77,14 @@ void doTransform() {
 	//transform = glm::identity<glm::mat4>();
 	//transform = glm::rotate(transform, glm::radians(angle), glm::vec3(0.0f, 0.0f, 1.0f));  
 
-	float angle = -0.05f;
+	float angle = -0.5f;
 	transform = glm::rotate(transform, glm::radians(angle), glm::vec3(0.0f, 1.0f, 0.0f));
 }
 
 void prepareVAO() {
-	geometry = Geometry::createBox(0.5f);
+	//geometry = Geometry::createBox(0.5f);
+	geometry = Geometry::createSphere(0.5f);
+	//geometry = Geometry::createPlane(0.8f, 0.6f);
 }
 
 void prepareShader() {
@@ -89,7 +95,7 @@ void prepareTexture() {
 	//texture = new Texture("./assets/textures/texture.jpeg", 0);
 	textureGrass = new Texture("./assets/textures/grass.jpeg", 0);
 	textureLand = new Texture("./assets/textures/land.jpeg", 0);
-	textureEarth = new Texture("./assets/textures/earth.jpg",0);
+	textureEarth = new Texture("./assets/textures/earth.jpg", 0);
 }
 
 void prepareCamera() {
@@ -130,9 +136,11 @@ void render() {
 	//shader->setMatrix4x4("viewMatrix", viewMatrix);
 	shader->setMatrix4x4("projectionMatrix", perspectiveMatrix);//设置投影矩阵
 
-	//把光照数据设置到着色器中
+	//更新光照参数
 	shader->setVector3("lightDirection", lightDirection);
 	shader->setVector3("lightColor", lightColor);
+	shader->setFloat("specularIntensity", specularInstensity);
+	shader->setVector3("ambientColor", ambientColor);
 
 	shader->setVector3("cameraPosition", camera->mPosition);
 
@@ -193,7 +201,7 @@ int main(void) {
 	//doScaleTransform(); 
 	//preTransform();
 	while (app->update()) {
-		//doTransform();
+		doTransform();
 		cameraControl->update();
 		render();
 	}

@@ -24,6 +24,6 @@ protected:
 	bool mMiddleMousePressed = false;
 	float mCurrentMouseX = 0.0f, mCurrentMouseY = 0.0f;
 	std::map<int, bool>mKeyMap;
-	float mSensitivity = 60.0f;
+	float mSensitivity = 360.0f;
 	Camera* mCamera = nullptr;
 };

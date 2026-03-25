@@ -11,8 +11,11 @@ uniform float height;
 
 uniform sampler2D sampler;
 
+//光源参数
 uniform vec3 lightDirection;
 uniform vec3 lightColor;
+uniform float specularIntensity;
+uniform vec3 ambientColor; 
 
 uniform vec3 cameraPosition;
 
@@ -46,10 +49,14 @@ void main()
 	float dotResult = dot(-lightDirN,normalN);
 	float flag = step(0.0f,dotResult);
 	vec3 lightReflect = normalize(reflect(lightDirN,normalN));
-	float specular = clamp(dot(lightReflect,-viewDir),0.0f,1.0f);
-	vec3 specularColor = lightColor * specular * flag;
+	float specular = max(dot(lightReflect,-viewDir),0.0f);
+	specular = pow(specular,10);
+	vec3 specularColor = lightColor * specular * flag * specularIntensity;
 
-	vec3 finalColor = diffuseColor + specularColor;
+	//环境光计算
+	vec3 ambientColor = objectColor * ambientColor;
+
+	vec3 finalColor = diffuseColor + specularColor + ambientColor;
 
 	//FragColor = texture(sampler,uv);
 	FragColor = vec4(finalColor,1.0f);
