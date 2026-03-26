@@ -4,6 +4,10 @@
 CameraControl::CameraControl() {};
 CameraControl::~CameraControl() {};
 
+void CameraControl::onCursor(double xpos,double ypos) {
+	mCurrentMouseX = xpos, mCurrentMouseY = ypos;
+}
+
 void CameraControl::onMouse(int button, int action, int mods, double xpos, double ypos) {
 	bool pressed = action == GLFW_PRESS ? true : false;
 	if (pressed) {
@@ -23,10 +27,7 @@ void CameraControl::onMouse(int button, int action, int mods, double xpos, doubl
 		break;
 	}
 };
-void CameraControl::onCursor(double xpos, double ypos) {
-	mCurrentMouseX = xpos;
-	mCurrentMouseY = ypos;
-};
+
 void CameraControl::onKey(int key, int scancode, int action, int mods) {
 	if (action == GLFW_REPEAT) {
 		return;

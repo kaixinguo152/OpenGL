@@ -14,6 +14,11 @@ public:
 	void onCursor(double xpos, double ypos) override;
 	void setViewDirection(float xpos,float ypos);
 
+	void processKeyInput();
+	void processCursorInput();
+
 private:
-	GLfloat mMoveSpeed{ 0.005f };
+	GLfloat mMoveSpeed{ 1.0f };
+
+	float mLastFrame{ 0.0f };
 };
