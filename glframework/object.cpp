@@ -22,14 +22,14 @@ void Object::setScale(glm::vec3 scale) {
 	mScale = scale;
 }
 
-glm::mat4 Object::getMatrix() {
+glm::mat4 Object::getModelMatrix() {
 	glm::mat4 transform{ 1.0f };
 
 	transform = glm::scale(transform, mScale);
 
-	transform = glm::rotate(transform, mAngleX, glm::vec3(1.0f, 0.0f, 0.0f));
-	transform = glm::rotate(transform, mAngleY, glm::vec3(0.0f, 1.0f, 0.0f));
-	transform = glm::rotate(transform, mAngleZ, glm::vec3(0.0f, 1.0f, 0.0f));
+	transform = glm::rotate(transform, glm::radians(mAngleX), glm::vec3(1.0f, 0.0f, 0.0f));
+	transform = glm::rotate(transform, glm::radians(mAngleY), glm::vec3(0.0f, 1.0f, 0.0f));
+	transform = glm::rotate(transform, glm::radians(mAngleZ), glm::vec3(0.0f, 1.0f, 0.0f));
 
 	transform = glm::translate(glm::mat4(1.0f), mPosition) * transform;
 

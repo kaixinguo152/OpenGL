@@ -7,6 +7,10 @@
 #include"application/Application.h"
 #include"glframework/texture.h"
 
+#include"glframework/geometry.h"
+#include"glframework/material/PhongMaterial.h"
+#include"glframework/mesh.h"
+
 //引入相机和控制器
 #include"application/camera/perspectiveCamera.h"
 #include"application/camera/gameCameraControl.h"
@@ -66,6 +70,16 @@ void OnKey(GLFWwindow* window, int key, int scancode, int action, int mods) {
 	//}
 	//else return;
 	cameraControl->onKey(key, scancode, action, mods);
+}
+
+void prepare() {
+	auto geometry = Geometry::createSphere(1.0f);
+
+	auto material = new PhongMaterial();
+	material->mShiness = 32.0f;
+	material->mDiffuse = new Texture("assets/textures/land.jpeg", 0);
+
+	auto mesh = new Mesh(geometry, material);
 }
 
 void preTransform() {

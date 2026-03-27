@@ -15,7 +15,7 @@ public:
 
 	void setScale(glm::vec3 scale);
 
-	glm::mat4 getMatrix();
+	glm::mat4 getModelMatrix();
 
 protected:
 	glm::vec3 mPosition{ 0.0f };
