@@ -28,8 +28,6 @@ gameCameraControl* cameraControl = nullptr;
 
 glm::vec3 lightDirection = glm::vec3(-1.0f, -1.0f, -1.0f);
 glm::vec3 lightColor = glm::vec3(1.0f, 1.0f, 1.0f);
-//specular
-float specularInstensity = 0.7f;
 
 //鼠标按下/抬起
 void OnMouse(int button, int action, int mods) {

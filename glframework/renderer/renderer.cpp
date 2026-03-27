@@ -22,7 +22,7 @@ void Renderer::render(
 	//清理画布
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	//遍历mesh进行绘制
-	for (int i = 0;i, meshes.size();i++) {
+	for (int i = 0; i < meshes.size(); i++) {
 		auto mesh = meshes[i];
 		auto geometry = mesh->mGeometry;
 		auto material = mesh->mMaterial;
