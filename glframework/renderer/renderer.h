@@ -4,6 +4,8 @@
 #include"../mesh.h"
 #include"../../application/camera/camera.h"
 #include"../light/directionalLight.h"
+#include"../light/ambientLight.h"
+#include"../shader.h"
 
 class Renderer {
 public:
@@ -14,8 +16,13 @@ public:
 	void render(
 		const std::vector<Mesh*>& meshes,
 		Camera* camera,
-		DirectionLight* dirLight
+		DirectionalLight* dirLight,
+		AmbientLight* ambLight
 	);
 private:
-
+	//根据material类型挑选shader
+	Shader* pickShader(MaterialType type);
+private:
+	Shader* mPhongShader{ nullptr };
+	Shader* mBShader{ nullptr };
 };

@@ -1,6 +1,6 @@
 #include"PhongMaterial.h"
 
 PhongMaterial::PhongMaterial(){
-	mTpye = MaterialType::PhongMaterial;
+	mType = MaterialType::PhongMaterial;
 }
 PhongMaterial::~PhongMaterial(){}
