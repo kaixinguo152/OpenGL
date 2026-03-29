@@ -9,8 +9,11 @@
 
 #include"glframework/geometry.h"
 #include"glframework/material/PhongMaterial.h"
+#include"glframework//material/whiteMaterial.h"
+
 #include"glframework/mesh.h"
 #include"glframework/renderer/renderer.h"
+#include"glframework/light/pointLight.h"
 
 //引入相机和控制器
 #include"application/camera/perspectiveCamera.h"
@@ -20,7 +23,8 @@
 
 Renderer* renderer = nullptr;
 std::vector<Mesh*> meshes{};
-DirectionalLight* dirLight = nullptr;
+//DirectionalLight* dirLight = nullptr;
+PointLight* pointLight = nullptr;
 AmbientLight* ambLight = nullptr;
 
 perspectiveCamera* camera = nullptr;
@@ -61,6 +65,7 @@ void prepareCamera() {
 		0.1f,
 		1000.0f
 	);
+	camera->setPosition(glm::vec3(0.0f, 0.0f, 5.0f));
 
 	cameraControl = new gameCameraControl();
 	cameraControl->setCamera(camera);
@@ -69,19 +74,34 @@ void prepareCamera() {
 void prepare() {
 	renderer = new Renderer();
 
-	auto geometry = Geometry::createSphere(1.0f);
+	auto geometryCube = Geometry::createBox(1.0f);
+	auto materialRock = new PhongMaterial();
+	materialRock->mShiness = 32.0f;
+	materialRock->mDiffuse = new Texture("./assets/textures/rock.jpg", 0);
+	materialRock->mSpecularMask = new Texture("./assets/textures/rock.jpg", 1);
+	auto meshRock = new Mesh(geometryCube, materialRock);
+	meshRock->setPosition(glm::vec3(0.0f, 0.0f, 0.0f));
+	meshes.push_back(meshRock);
 
-	auto material = new PhongMaterial();
-	material->mShiness = 32.0f;
-	material->mDiffuse = new Texture("./assets/textures/earth.jpg", 0);
+	//创建白色物体
+	auto geometryWhilte = Geometry::createSphere(0.1f);
+	auto materialWhite = new WhiteMaterial();
+	auto meshWhite = new Mesh(geometryWhilte, materialWhite);
+	meshWhite->setPosition(glm::vec3(0.6f, 0.6f, 0.6f));
+	meshes.push_back(meshWhite);
 
-	auto mesh = new Mesh(geometry, material);
-	meshes.push_back(mesh);
+	//dirLight = new DirectionalLight();
+	//dirLight->mDirection = glm::vec3(-1.0f);
+	//dirLight->mColor = glm::vec3(1.0f);
+	//dirLight->mSpecularIntensity = 0.7f;
 
-	dirLight = new DirectionalLight();
-	dirLight->mDirection = glm::vec3(-1.0f);
-	dirLight->mColor = glm::vec3(1.0f);
-	dirLight->mSpecularIntensity = 0.7f;
+	pointLight = new PointLight();
+	pointLight->setPosition(glm::vec3(meshWhite->getPosition()));
+	pointLight->mColor = glm::vec3(1.0f);
+	pointLight->mK2 = 0.017f;
+	pointLight->mK1 = 0.07f;
+	pointLight->mKc = 1.0f;
+
 	ambLight = new AmbientLight();
 	ambLight->mColor = glm::vec3(0.15f);
 }
@@ -104,8 +124,11 @@ int main(void) {
 	glClearColor(0.5f, 0.5f, 0.5f, 1.0f);
 
 	while (app->update()) {
+		//meshes[1]->rotateX(1.0f);
+		//meshes[1]->rotateY(10.0f);
+
 		cameraControl->update();
-		renderer->render(meshes, camera, dirLight, ambLight);
+		renderer->render(meshes, camera, pointLight, ambLight);
 	}
 	app->destroy();
 	return 0;
